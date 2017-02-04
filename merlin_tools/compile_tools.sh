@@ -12,8 +12,8 @@ fi
 echo "compiling SPTK..."
 # edge case related to emscripten and pos.__pos and clang...
 # in bin/vc - skip it...
-mv SPTK-3.9/bin/vc .
-mv SPTK-3.9/bin/xgr .
+#mv SPTK-3.9/bin/vc .
+#mv SPTK-3.9/bin/xgr .
 cp SPTK-3.9/configure.ac .
 cp configure.ac configure.ac.bak
 sed -i '277 d' configure.ac
@@ -25,10 +25,10 @@ cp configure.ac SPTK-3.9/configure.ac
     emconfigure ./configure --prefix=$PWD/build --enable-da=no;
     emmake make;
 )
-rm -rf SPTK-3.9/bin/vc
-rm -rf SPTK-3.9/bin/xgr
-mv vc SPTK-3.9/bin
-mv xgr SPTK-3.9/bin
+#rm -rf SPTK-3.9/bin/vc
+#rm -rf SPTK-3.9/bin/xgr
+#mv vc SPTK-3.9/bin
+#mv xgr SPTK-3.9/bin
 cp configure.ac.bak SPTK-3.9/configure.ac
 
 # 2. Getting WORLD

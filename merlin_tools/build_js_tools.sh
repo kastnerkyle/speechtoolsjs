@@ -4,6 +4,7 @@ lib_dir="SPTK-3.9/lib"
 lib_o_files=`ls "$lib_dir"/*.o | tr "\n" " "`
 echo $lib_o_files
 
+mkdir -p build/
 for i in `ls -d $bin_dir/*/`; do
     echo $i
     target_dir=$i
@@ -84,6 +85,10 @@ for i in `ls -d $bin_dir/*/`; do
     elif [ $name == "imsvq" ]; then
         extras=`ls "$bin_dir"/ivq/_*.o | tr "\n" " "`
         target_o_files="$extras $iffrextras $fftrextras"
+    elif [ $name == "lbg" ]; then
+        extras1=`ls "$bin_dir"/vq/_*.o | tr "\n" " "`
+        extras2=`ls "$bin_dir"/nrand/_*.o | tr "\n" " "`
+        target_o_files="$extras1 $extras2"
     elif [ $name == "lpc" ]; then
         extras1=`ls "$bin_dir"/acorr/_*.o | tr "\n" " "`
         extras2=`ls "$bin_dir"/levdur/_*.o | tr "\n" " "`
@@ -123,6 +128,10 @@ for i in `ls -d $bin_dir/*/`; do
     elif [ $name == "mlsadf" ]; then
         extras1=`ls "$bin_dir"/mc2b/_*.o | tr "\n" " "`
         target_o_files="$extras"
+    elif [ $name == "msvq" ]; then
+        extras1=`ls "$bin_dir"/vq/_*.o | tr "\n" " "`
+        extras2=`ls "$bin_dir"/ivq/_*.o | tr "\n" " "`
+        target_o_files="$extras1 $extras2"
     elif [ $name == "ndps2c" ]; then
         target_o_files="$fftrextras"
     elif [ $name == "pitch" ]; then
@@ -138,8 +147,15 @@ for i in `ls -d $bin_dir/*/`; do
         target_o_files="$fftrextras"
     elif [ $name == "uels" ]; then
         target_o_files="$ifftrextras $fftrextras"
+    elif [ $name == "x2x" ]; then
+        # this one is weird?
+        pushd .
+        cd "$bin_dir/x2x"
+        emmake make
+        popd
+        target_dir="$bin_dir/x2x"
+        target_o_files=`ls "$target_dir"/*.o | tr "\n" " "`
     fi
-
-    emcc -O0 $lib_o_files $target_o_files -o out.js
-    echo "complete"
+    emcc -O0 $lib_o_files $target_o_files -o build/"$name".js
+    echo "$name complete"
 done
